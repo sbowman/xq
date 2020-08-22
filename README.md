@@ -15,5 +15,14 @@ To search for elements, use the `--find` command:
 To execute an XPath expression, use the `--exec` command:
 
     cat sample.xml | ./xq --exec 'count(//MyElement)'
-    cat sample.xml | ./xq --exec 'sum(//MyElement@bytes 
+    cat sample.xml | ./xq --exec 'sum(//MyElement@bytes
+    
+## Dependencies
+
+This app is really just a simple CLI wrapper around these two great Go XML
+packages:
+
+* https://github.com/antchfx/xpath
+* https://github.com/antchfx/xmlquery
+
    
