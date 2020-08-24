@@ -47,15 +47,7 @@ var rootCmd = &cobra.Command{
 				}
 
 				for _, match := range matches {
-					switch match.Type {
-					case xmlquery.TextNode,
-						xmlquery.CharDataNode,
-						xmlquery.CommentNode,
-						xmlquery.AttributeNode:
-						fmt.Println(match.InnerText())
-					default:
-						fmt.Println(match.OutputXML(true))
-					}
+					render(match)
 				}
 				return
 			}
@@ -76,7 +68,7 @@ var rootCmd = &cobra.Command{
 				fmt.Println(strconv.FormatFloat(r, 'f', -1, 64))
 			case xmlquery.NodeNavigator:
 				for {
-					fmt.Println(r.Current().OutputXML(true))
+					render(r.Current())
 					if !r.MoveToNext() {
 						break
 					}
@@ -97,4 +89,17 @@ func Execute() {
 func init() {
 	rootCmd.Flags().StringVarP(&find, "find", "f", "", "Search the XML for matching elements or attributes using XPath")
 	rootCmd.Flags().StringVarP(&exec, "exec", "e", "", "Compile and run an XPath expression over the XML document")
+}
+
+// Output the details on this xmlquery.Node (element, text, attribute, etc.).
+func render(node *xmlquery.Node) {
+	switch node.Type {
+	case xmlquery.TextNode,
+		xmlquery.CharDataNode,
+		xmlquery.CommentNode,
+		xmlquery.AttributeNode:
+		fmt.Println(node.InnerText())
+	default:
+		fmt.Println(node.OutputXML(true))
+	}
 }
